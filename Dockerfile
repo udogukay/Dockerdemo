@@ -1,13 +1,14 @@
-FROM node:18
+FROM ubuntu
+MAINTAINER Kimbro Staken
 
-WORKDIR /app
+RUN apt-get install -y software-properties-common python
+RUN add-apt-repository ppa:chris-lea/node.js
+RUN echo "deb http://us.archive.ubuntu.com/ubuntu/ precise universe" >> /etc/apt/sources.list
+RUN apt-get update
+RUN apt-get install -y nodejs
+#RUN apt-get install -y nodejs=0.6.12~dfsg1-1ubuntu1
+RUN mkdir /var/www
 
-COPY package*.json ./
+ADD app.js /var/www/app.js
 
-RUN npm install
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
+CMD ["/usr/bin/node", "/var/www/app.js"] 
